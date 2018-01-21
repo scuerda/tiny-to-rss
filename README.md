@@ -6,13 +6,18 @@ tweet from [Lou Huang](https://github.com/louh).
 
 ### Configuration
 
-Links to TinyLetter archives can be added as entries in the `feed_lookup` in the `app.py` file.
+None required. The proxy API will scrape author, title and TinyLetter descriptions and populate accordingly.
+
 
 ### Use
 
-The API exposes endpoints for summaries feeds and full record feeds. Both endpoints take a feed name (the key that you
-set up in the `feed_lookup`) and can take an optional count of results to fetch. TinyLetter returns a minimum of 10
-results when displaying the archive, so any count less than 10 will have no effect.
+The API exposes endpoints for summaries feeds and full record feeds. Both endpoints take a "slugged" feed name.
+
+For example, if you want to generate a feed for `https://tinyletter.com/data-is-plural/archive`, you would use
+`data-is-plural` as the `feed_name` parameter. 
+
+ You can also pass an optional count of results to fetch. TinyLetter returns a minimum of 10 results when displaying 
+ the archive, so any count less than 10 will have no effect.
 
 **Summary Feed**
 
