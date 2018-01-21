@@ -2,3 +2,4 @@ flask==0.12.2
 requests==2.18.4
 BeautifulSoup4==4.4.0
 python-dateutil==2.6.1
+feedgenerator==1.9
