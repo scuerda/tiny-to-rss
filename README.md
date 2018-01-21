@@ -6,31 +6,89 @@ tweet from [Lou Huang](https://github.com/louh).
 
 ### Configuration
 
-Links to TinyLetter archives can be added as entries in the `letters_to_proxy.py`
-file.
+Links to TinyLetter archives can be added as entries in the `feed_lookup` in the `app.py` file.
 
 ### Use
 
-The API exposes two endpoints: 
+The API exposes endpoints for summaries feeds and full record feeds. Both endpoints take a feed name (the key that you
+set up in the `feed_lookup`) and can take an optional count of results to fetch. TinyLetter returns a minimum of 10
+results when displaying the archive, so any count less than 10 will have no effect.
 
-Summary Feeds: `/feeds/summary/<feed_name>`
+**Summary Feed**
 
-Full Feeds: `'/feeds/full/<feed_name>`
+The summary endpoint will return a feed with a short description of each letter's content.
 
-The summary endpoint will return a feed with a short description of each letter's content. The full end point will
-return the full content of the letter itself. Currently, this feature is SLOW, but improvements will be made.
+* **URL**
+
+  `/feeds/summary/:feed_name/:count/`
+  `/feeds/summary/:feed_name/`
+
+* **Method:**
+
+  `GET`
+  
+* **URL Params**
+
+  **Required**
+  
+  `feed_name=[string]`
+  
+  **Optional**
+  
+  `count=[int]`
+  
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** ATOM XML Document
  
-Passing the key for the given feed (as specified in the `letters_to_proxy.py` file) will 
-return serialized feed data for the requested TinyLetter. 
 
-This allows configuring separate URLs in a feed reader for each TinyLetter you want to follow.
+**Full Feed**
 
+The full end point will return the full content of the letter itself.
+
+* **URL**
+
+  `/feeds/full/:feed_name/:count/`
+  `/feeds/full/:feed_name/`
+
+* **Method:**
+
+  `GET`
+  
+* **URL Params**
+
+  **Required**
+  
+  `feed_name=[string]`
+  
+  **Optional**
+  
+  `count=[int]`
+  
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** ATOM XML Document
+    
+    
 ### Deployment
 
 As this is a standard, WSGI-based Flask app, it can be packaged and deployed anywhere that can
 host and serve Python web applications. That said, this is an ideal application for deploying to AWS Lambda using
 [zappa](https://github.com/Miserlou/Zappa)
 
-More details on ideal zappa config coming soon...
+Zappa configuration and deployment is fairly straightforward.
+
+Configuring a IAM role for the application can be a bit tricky. The Zappa documentation is slightly vague on how to best
+grant permissions, partially due to the security implications. That said, [this](https://github.com/Bartvds/Zappa/blob/6f6f52eb01976c2390c24ef2b40c5c43c35ad8e5/example/policy/deploy.json)
+is an example policy that will allow you to deploy this application with Zappa.
+
+The steps required before running Zappa, include setting up an IAM Role, downloading and installing the AWS credentials
+in a local credentials file (likely located at `~/.aws/credentials`), and then attaching a policy to that role.
+
+The policy linked to above requires a few edits. You'll need to fill in the name of the s3 bucket that you intend to use. 
+This bucket should also be specified in the `zappa_settings.json` file that will be generated after running `zappa init`. 
+You'll also need to fill in your AWS account id. 
 
  
