@@ -17,6 +17,9 @@ Summary Feeds: `/feeds/summary/<feed_name>`
 
 Full Feeds: `'/feeds/full/<feed_name>`
 
+The summary endpoint will return a feed with a short description of each letter's content. The full end point will
+return the full content of the letter itself. Currently, this feature is SLOW, but improvements will be made.
+ 
 Passing the key for the given feed (as specified in the `letters_to_proxy.py` file) will 
 return serialized feed data for the requested TinyLetter. 
 
